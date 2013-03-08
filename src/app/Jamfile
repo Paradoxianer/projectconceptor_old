@@ -1,0 +1,129 @@
+SubDir HAIKU_TOP 3rdparty projectconceptor src app ;
+
+#SetSubDirSupportedPlatformsBeOSCompatible ;
+
+# for BRecentItems
+#UsePublicHeaders [ FDirName be_apps Tracker ] ;
+
+#svnupdate
+rule snvupdate
+{
+Depends all : $(1) ;
+}
+
+actions snvupdate
+{
+	echo "---------SVN INFO GEN-----------"
+	touch $(HAIKU_TOP)/3rdparty/projectconceptor/src/app/About/$(1)
+	rm $(HAIKU_TOP)/3rdparty/projectconceptor/src/app/About/$(1)
+	echo "" >> $(HAIKU_TOP)/3rdparty/projectconceptor/src/app/About/$(1)
+	echo "#ifndef SVN_INFO_H" >> $(HAIKU_TOP)/3rdparty/projectconceptor/src/app/About/$(1)
+	echo "#define SVN_INFO_H" >> $(HAIKU_TOP)/3rdparty/projectconceptor/src/app/About/$(1)
+	echo "" >> $(HAIKU_TOP)/3rdparty/projectconceptor/src/app/About/$(1)
+	echo "//do not edit this" >> $(HAIKU_TOP)/3rdparty/projectconceptor/src/app/About/$(1)
+	echo " #define SVN_REV_STR " \"`svn info | grep Revision | awk '{print $2}'`\" >> $(HAIKU_TOP)/3rdparty/projectconceptor/src/app/About/$(1)
+	echo "" >> $(HAIKU_TOP)/3rdparty/projectconceptor/src/app/About/$(1)
+	echo "#endif" >> $(HAIKU_TOP)/3rdparty/projectconceptor/src/app/About/$(1)
+	echo "UPDATED ABOUT"
+	echo "--------------------------------"
+}
+
+snvupdate AboutSvnInfo.h ;
+
+
+# source directories
+local sourceDirs =
+	About
+	Commands
+	Config
+	Document
+	plugins
+	ToolBar
+	Tools
+	Tools/tinyxml
+;
+
+local sourceDir ;
+for sourceDir in $(sourceDirs) {
+	SEARCH_SOURCE += [ FDirName $(HAIKU_TOP) 3rdparty projectconceptor src app $(sourceDir) ] ;
+}
+
+SEARCH_SOURCE += [ FDirName $(HAIKU_TOP) 3rdparty projectconceptor src include ] ;
+SEARCH_SOURCE += [ FDirName $(HAIKU_TOP) 3rdparty projectconceptor src include plugins ] ;
+SEARCH_SOURCE += [ FDirName $(HAIKU_TOP) 3rdparty projectconceptor src include tinyxml ] ;
+
+
+PROJECT_CONCEPTOR_SOURCES =
+	MainView.cpp
+	ProjectConceptor.cpp
+
+	# About
+	AboutWindow.cpp
+	AboutView.cpp
+	AboutURLView.cpp
+
+	# Config
+	ConfigManager.cpp
+	ConfigWindow.cpp
+	ConfigView.cpp
+	MessageXmlReader.cpp
+	MessageXmlWriter.cpp
+	PluginView.cpp
+	PluginItem.cpp
+	PluginInfoView.cpp
+
+	# Commands
+	PCommand.cpp
+	PCommandManager.cpp
+
+	# Document
+	PDocument.cpp
+	PDocumentManager.cpp
+	PEditor.cpp
+	PEditorManager.cpp
+	PWindow.cpp
+	HelpManager.cpp
+
+	# plugins
+	BasePlugin.cpp
+	PluginManager.cpp
+
+	# ToolBar
+	BaseItem.cpp
+	Mover.cpp
+	ToolBar.cpp
+	ToolBarSeperator.cpp
+	ToolItem.cpp
+	ToolMenu.cpp
+	ColorToolItem.cpp
+	FloatToolItem.cpp
+	PatternToolItem.cpp
+
+	# Tools
+	AFont.cpp
+	BViewSplitter.cpp
+	Divider.cpp
+	PCSavePanel.cpp
+	PDocLoader.cpp
+	Indexer.cpp
+	InputRequestView.cpp
+	InputRequest.cpp
+	ShortCutFilter.cpp
+	TextViewCompleter.cpp
+
+	# Tools/tinyxml
+
+	tinystr.cpp
+ 	tinyxml.cpp
+ 	tinyxmlerror.cpp
+	tinyxmlparser.cpp
+;
+Application ProjectConceptor :
+	 $(PROJECT_CONCEPTOR_SOURCES)
+	: be root translation tracker $(TARGET_LIBSTDC++)
+	: ProjectConceptor.rsrc Tools/InputRequest.rsrc
+;
+
+StaticLibrary libprojectconceptor.a :
+	$(PROJECT_CONCEPTOR_SOURCES)
+;
