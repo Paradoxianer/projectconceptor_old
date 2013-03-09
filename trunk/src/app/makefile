@@ -173,7 +173,7 @@ default .DEFAULT:
 	mkdir -p ../../bin
 	cp -rf $(NAME) ../../bin
 	ln -sf $(NAME) ../../bin/ProjectConceptor.a
-
+	ln -sf /boot/home/config/add-ons/Translators/ ../../bin/placeTranslatorsHERE
 
 
 
