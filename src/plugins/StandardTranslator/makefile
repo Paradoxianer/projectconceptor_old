@@ -111,5 +111,5 @@ install:: $(NAME)
 
 default .DEFAULT:
 	mkdir -p ../../../bin/Plugins/Translators
-	cp -rf  $(OBJ_DIR)/$(NAME) ../../../bin/Plugins/Translators
+	cp -rf  $(OBJ_DIR)/$(NAME) ../../../bin/
 	
