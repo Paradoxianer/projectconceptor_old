@@ -126,7 +126,7 @@ void ClassRenderer::MouseDown(BPoint where)
 				connecting	= 3;
 			else if (bottomConnection.Contains(where))
 				connecting	= 4;
-			else if ( (where.y >= (frame.bottom-circleSize)) && (where.x >= (frame.right-circleSize)) )
+			else if ( (where.y >= (frame.bottom-(2*circleSize))) && (where.x >= (frame.right-(2*circleSize))) )
 			{
 				resizing = true;
 			}
@@ -338,14 +338,15 @@ void ClassRenderer::Draw(BView *drawOn, BRect updateRect){
 	drawOn->FillTriangle(BPoint(frame.right-circleSize,yOben),BPoint(frame.right,yMitte),BPoint(frame.right-circleSize,yUnten));
 	//pattern resizePattern = { 0x55, 0x55, 0x55, 0x55, 0x55,0x55, 0x55, 0x55 };*/
 	
-	drawOn->FillTriangle(BPoint(frame.right-circleSize,frame.bottom),BPoint(frame.right,frame.bottom-circleSize),BPoint(frame.right,frame.bottom),B_MIXED_COLORS);
+	drawOn->FillTriangle(BPoint(frame.right-(3*circleSize),frame.bottom),BPoint(frame.right,frame.bottom-(3*circleSize)),BPoint(frame.right,frame.bottom),B_MIXED_COLORS);
 	
 
 	drawOn->SetHighColor(borderColor);
 	drawOn->SetPenSize(penSize);
 	drawOn->StrokeRoundRect(frame, xRadius, yRadius);
-	drawOn->SetPenSize(1.0);
-	drawOn->StrokeTriangle(BPoint(frame.left,yOben),BPoint(frame.left+circleSize,yMitte),BPoint(frame.left,yUnten));
+//	drawOn->SetPenSize(1.0);
+	//drawOn->StrokeTriangle(BPoint(frame.left,yOben),BPoint(frame.left+circleSize,yMitte),BPoint(frame.left,yUnten));
+	//drawOn->StrokeTriangle(BPoint(frame.right-(2*circleSize),frame.bottom),BPoint(frame.right,frame.bottom-(2*circleSize)),BPoint(frame.right,frame.bottom));
 //	drawOn->StrokeTriangle(BPoint(frame.right-circleSize,yOben),BPoint(frame.right,yMitte),BPoint(frame.right-circleSize,yUnten));
 	if (showConnecter)
 	{

@@ -192,9 +192,9 @@ void AttributRenderer::Draw(BView *drawOn, BRect updateRect)
 		value->Draw(drawOn,updateRect);
 	if (deleter)
 		deleter->Draw(drawOn,updateRect);
-	/*rgb_color stored = drawOn->HighColor();
+	rgb_color stored = drawOn->HighColor();
 	drawOn->SetHighColor(60,50,50,255);
 	drawOn->StrokeLine(BPoint(frame.left+divider,frame.top),BPoint(frame.left+divider,frame.bottom));
-	drawOn->SetHighColor(stored);*/
+	drawOn->SetHighColor(stored);
 }
 
