@@ -404,6 +404,13 @@ void GraphEditor::MouseDown(BPoint where) {
 			//EventMaske setzen so dass die Maus auch über den View verfolgt wird
 			SetMouseEventMask(B_POINTER_EVENTS, B_NO_POINTER_HISTORY | B_SUSPEND_VIEW_FOCUS | B_LOCK_WINDOW_FOCUS);
 		}
+		//if any other mousebutton was clicked we just send a deselect command
+		else {
+			BMessage *selectMessage=new BMessage(P_C_EXECUTE_COMMAND);
+			selectMessage->AddRect("frame", BRect(-10000,-10000,-9999,-9999));
+			selectMessage->AddString("Command::Name","Select");
+			sentTo->SendMessage(selectMessage);
+		}
 	}
 }
 
