@@ -10,12 +10,12 @@
 #include <support/List.h>
 #include <MessageFilter.h>
 #include <String.h>
-#if defined(__HAIKU__) && __GNUC__ > 3
+//#if defined(__HAIKU__) && __GNUC__ > 3
 #include <set>
 using namespace std;
-#else
-#include <cpp/set.h>
-#endif
+//#else
+//#include <cpp/set.h>
+//#endif
 
 
 /**
