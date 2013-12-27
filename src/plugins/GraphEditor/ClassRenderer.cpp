@@ -558,12 +558,12 @@ void ClassRenderer::InsertAttribute(char *attribName,BMessage *attribute,int32 c
 	BRect	attributeRect;
 	if (attributes->empty())
 	{
-		attributeRect = BRect(frame.left+circleSize+2,name->Frame().bottom+6,frame.right-circleSize-2,frame.bottom-2);
+		attributeRect = BRect(frame.left+circleSize+2,name->Frame().bottom+6,frame.right-circleSize-2,frame.bottom);
 	}
 	else
 	{
 		Renderer* lastRenderer = (*attributes)[attributes->size()-1];
-		attributeRect = BRect(frame.left+circleSize+2,lastRenderer->Frame().bottom+1,frame.right-circleSize-2,frame.bottom-2);
+		attributeRect = BRect(frame.left+circleSize+2,lastRenderer->Frame().bottom,frame.right-circleSize-2,frame.bottom);
 	}
 	BMessage*	editMessage		= new BMessage(P_C_EXECUTE_COMMAND);
 	editMessage->AddPointer("node",container);
