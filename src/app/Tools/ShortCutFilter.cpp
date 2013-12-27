@@ -1,5 +1,6 @@
 #include <app/Handler.h>
 #include <app/Looper.h>
+#include <support/Debug.h>
 
 #include "ShortCutFilter.h"
 
@@ -28,6 +29,7 @@ BMessage* ShortCutFilter::GetShortcutList(void)
 }
 filter_result ShortCutFilter::Filter(BMessage *message, BHandler **target)
 {
+	TRACE();
 	uint32		key;
 	uint32		modifiers;
 	shortcut	*theShortcut	= NULL;
