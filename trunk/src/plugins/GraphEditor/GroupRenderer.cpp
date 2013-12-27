@@ -71,8 +71,9 @@ void GroupRenderer::ValueChanged()
 }
 
 void GroupRenderer::MoveBy(float dx,float dy) {
-	frame.OffsetBy(dx,dy);
-	name->MoveBy(dx,dy);
+	//frame.OffsetBy(dx,dy);
+	//name->MoveBy(dx,dy);
+	ClassRenderer::MoveBy(dx,dy);
 	for (int32 i=0;i<renderer->CountItems();i++)
 		((Renderer *)renderer->ItemAt(i))->MoveBy(dx,dy);
 }
@@ -129,7 +130,8 @@ Renderer* GroupRenderer::FindRenderer(BMessage *container) {
 }
 
 
-void GroupRenderer::RecalcFrame(void) {
+void GroupRenderer::RecalcFrame(bool toFit) {
+	
 	Renderer*	tmpRenderer		= NULL;
 	BRect			groupFrame			= BRect(0,0,-1,-1);
 	for (int32 i=0;(i<renderer->CountItems());i++) {
@@ -144,7 +146,7 @@ void GroupRenderer::RecalcFrame(void) {
 	groupFrame.InsetBy(-5,-5);
 	groupFrame.top = groupFrame.top-15;
 	if (groupFrame != frame) {
-		frame = groupFrame;
+		frame =  frame | groupFrame;
 		//** need to move the Attribs and the Name...
 		if (parentNode) {
 			GroupRenderer	*parent	= NULL;

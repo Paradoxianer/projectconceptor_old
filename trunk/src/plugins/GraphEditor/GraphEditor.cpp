@@ -24,7 +24,7 @@
 
 const char		*G_E_TOOL_BAR			= "G_E_TOOL_BAR";
 
-GraphEditor::GraphEditor(image_id newId):PEditor(),BView(BRect(0,0,400,400),"GraphEditor",B_FOLLOW_ALL_SIDES,B_WILL_DRAW ) {
+GraphEditor::GraphEditor(image_id newId):PEditor(),BView(BRect(0,0,400,400),"GraphEditor",B_FOLLOW_ALL_SIDES,B_WILL_DRAW) {
 	TRACE();
 	pluginID	= newId;
 	Init();
@@ -90,7 +90,7 @@ void GraphEditor::Init(void) {
 	patternMessage->AddInt32("HighColor",*(int32 *)&highColor);
 	rgb_color 	lowColor			= {128, 128, 128, 255};
 	patternMessage->AddInt32("LowColor",*(int32 *)&lowColor);
-	patternMessage->AddData("Node::Pattern",B_PATTERN_TYPE,(const void *)&B_SOLID_HIGH,sizeof(B_SOLID_HIGH));
+	patternMessage->AddData("Node::Pattern",B_PATTERN_TYPE,(const void *)&B_SOLID_HIGH,sizeof(B_SOLID_HIGH),false);
 
 	scaleMenu		= new BMenu(_T("Scale"));
 	BMessage	*newScale	= new BMessage(G_E_NEW_SCALE);
@@ -362,7 +362,6 @@ void GraphEditor::Draw(BRect updateRect) {
 		}
 		EndLineArray();
 	}
-	PRINT(("RENDERER COUNT %ld",renderer->CountItems()));
 	renderer->DoForEach(DrawRenderer,this);
 	if (selectRect) {
 		SetHighColor(81,131,171,120);
@@ -709,7 +708,7 @@ void GraphEditor::MessageReceived(BMessage *message) {
 				valueContainer->AddString("subgroup","Node::Data");
 				BMessage	*newAttribute	= new BMessage(type);
 				newAttribute->AddString("Name",inputstr);
-				newAttribute->AddData("Value",type,datadummy,sizeof(datadummy));
+				newAttribute->AddData("Value",type,datadummy,sizeof(datadummy),false);
 				valueContainer->AddMessage("newAttribute",newAttribute);
 				addMessage->AddMessage("valueContainer",valueContainer);
 				sentTo->SendMessage(addMessage);
