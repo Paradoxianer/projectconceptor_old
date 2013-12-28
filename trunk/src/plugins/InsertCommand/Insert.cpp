@@ -1,6 +1,8 @@
 #include "ProjectConceptorDefs.h"
 #include "Insert.h"
 
+#include <support/TypeConstants.h>
+
 
 Insert::Insert():PCommand() {
 }
@@ -18,7 +20,7 @@ void Insert::Undo(PDocument *doc,BMessage *undo) {
 	undo->FindPointer("Node::parent", (void **)&parentNode);
 	if (parentNode)
 		parentNode->FindPointer("Node::allNodes", (void **)&parentAllNodes);
-	while (undo->FindPointer("node",i,(void **)&node) == B_OK) {
+	while (undo->FindPointer("node",i,(void **)&node) & (node!=NULL) == B_OK) {
 		if (node->what != P_C_CONNECTION_TYPE){
 			allNodes->RemoveItem(node);
 			if (parentAllNodes)
@@ -30,7 +32,6 @@ void Insert::Undo(PDocument *doc,BMessage *undo) {
 		i++;
 	}
 	i=0;
-
 	doc->SetModified();
 }
 
@@ -39,7 +40,7 @@ BMessage* Insert::Do(PDocument *doc, BMessage *settings) {
 	BMessage		*node				= NULL;
 	BMessage		*parentNode			= NULL;
 	BList			*parentAllNodes		= NULL;
-	set<BMessage*>		*changed			= doc->GetChangedNodes();
+	set<BMessage*>	*changed			= doc->GetChangedNodes();
 	BList			*allConnections		= doc->GetAllConnections();
 	BList			*allNodes			= doc->GetAllNodes();
 	int32			i					= 0;
@@ -49,7 +50,7 @@ BMessage* Insert::Do(PDocument *doc, BMessage *settings) {
 		if (parentNode->FindPointer("Node::allNodes", (void **)&parentAllNodes) != B_OK)
 			parentNode->AddPointer("Node::allNodes", new BList());
 	}
-	while (settings->FindPointer("node",i,(void **)&node) == B_OK) {
+	while ((err=settings->FindPointer("node",i,(void **)&node)) == B_OK) {
 		if (node->what != P_C_CONNECTION_TYPE) {
 			allNodes->AddItem(node);
 			if (parentAllNodes)
