@@ -79,11 +79,13 @@ void GroupRenderer::MoveBy(float dx,float dy) {
 }
 
 void GroupRenderer::ResizeBy(float dx,float dy) {
-	if ((frame.right+dx-frame.left) > 70)
+	ClassRenderer::ResizeBy(dx,dy);
+	//** ToDo if its getting smaller move all inside nodes toghere
+	/*if ((frame.right+dx-frame.left) > 70)
 		frame.right		+= dx;
 	if  ((frame.bottom+dy-frame.top) > 30)
 		frame.bottom	+= dy;
-	name->ResizeBy(dy,dy);
+	name->ResizeBy(dy,dy);*/
 }
 
 

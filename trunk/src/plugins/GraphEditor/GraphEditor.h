@@ -176,6 +176,8 @@ protected:
 			image_id 		pluginID;
 
 			BScrollView		*myScrollParent;
+			
+			uint32			oldEventMask;
 
 private:
 };
