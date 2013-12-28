@@ -5,7 +5,7 @@
 #include "ShortCutFilter.h"
 
 
-ShortCutFilter::ShortCutFilter(BMessage* shortcutList):BMessageFilter(B_PROGRAMMED_DELIVERY,B_LOCAL_SOURCE)
+ShortCutFilter::ShortCutFilter(BMessage* shortcutList):BMessageFilter(B_PROGRAMMED_DELIVERY,B_LOCAL_SOURCE, B_KEY_DOWN)
 {
 	shortcutMap= map<uint32, shortcut*>();
 	AddShortCutList(shortcutList);
