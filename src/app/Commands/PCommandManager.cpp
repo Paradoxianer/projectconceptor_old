@@ -224,6 +224,7 @@ status_t PCommandManager::Execute(BMessage *settings) {
 						undoList->AddItem(new BMessage(*tmpMessage));
 						undoStatus	= undoList->CountItems()-1;
 					}
+					err=B_OK;
 				}
 				doc->SetModified();
 				(doc->GetEditorManager())->BroadCast(new BMessage(P_C_VALUE_CHANGED));
