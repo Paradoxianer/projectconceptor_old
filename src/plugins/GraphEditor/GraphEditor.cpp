@@ -24,7 +24,7 @@
 
 const char		*G_E_TOOL_BAR			= "G_E_TOOL_BAR";
 
-GraphEditor::GraphEditor(image_id newId):PEditor(),BView(BRect(0,0,400,400),"GraphEditor",B_FOLLOW_ALL_SIDES,B_WILL_DRAW) {
+GraphEditor::GraphEditor(image_id newId):PEditor(),BView(BRect(0,0,400,400),"GraphEditor",B_FOLLOW_ALL_SIDES,B_WILL_DRAW | B_NAVIGABLE) {
 	TRACE();
 	pluginID	= newId;
 	Init();
@@ -312,7 +312,7 @@ void GraphEditor::ValueChanged() {
 //	for (int32 i=0;i<changedNodes->CountItems();i++) {
 		PRINT(("GraphEditor::changedNode %ld:\n",i));
 		node = *it;
-		node->PrintToStream();
+		//node->PrintToStream();
 		if (node->FindPointer(renderString,(void **)&painter) == B_OK) {
 			if ((allConnections->HasItem(node))||(allNodes->HasItem(node)))
 				painter->ValueChanged();
@@ -400,8 +400,10 @@ void GraphEditor::MouseDown(BPoint where) {
 		currentMsg->FindInt32("modifiers", (int32 *)&modifiers);
 		if (buttons & B_PRIMARY_MOUSE_BUTTON) {
 			startMouseDown=new BPoint(scaledWhere);
+			oldEventMask = EventMask();
 			//EventMaske setzen so dass die Maus auch über den View verfolgt wird
-			SetMouseEventMask(B_POINTER_EVENTS, B_NO_POINTER_HISTORY | B_SUSPEND_VIEW_FOCUS | B_LOCK_WINDOW_FOCUS);
+			//SetMouseEventMask(B_POINTER_EVENTS, B_NO_POINTER_HISTORY | B_SUSPEND_VIEW_FOCUS | B_LOCK_WINDOW_FOCUS);
+			SetMouseEventMask(B_POINTER_EVENTS, B_NO_POINTER_HISTORY  | B_LOCK_WINDOW_FOCUS);
 		}
 		//if any other mousebutton was clicked we just send a deselect command
 		else {
@@ -463,6 +465,7 @@ void GraphEditor::MouseUp(BPoint where) {
 			selectMessage->AddRect("frame",*selectRect);
 			selectMessage->AddString("Command::Name","Select");
 			sentTo->SendMessage(selectMessage);
+			SetMouseEventMask(oldEventMask);
 		}
 		else {
 
@@ -574,6 +577,7 @@ void GraphEditor::DetachedFromWindow(void) {
 }
 void GraphEditor::MessageReceived(BMessage *message) {
 	//TRACE();
+	//message->PrintToStream();
 	switch(message->what) {
 		case P_C_VALUE_CHANGED: {
 			ValueChanged();
@@ -581,17 +585,6 @@ void GraphEditor::MessageReceived(BMessage *message) {
 		}
 		case P_C_DOC_BOUNDS_CHANGED: {
 			UpdateScrollBars();
-		/*	BRect		docRect		= doc->Bounds();
-			BRegion		clipper;
-			BRect		viewRect;
-			BRect		scrollRect	= myScrollParent->Bounds();
-			GetClippingRegion(&clipper); 
-			viewRect= clipper.Frame();
-			ResizeTo(docRect.right,docRect.bottom);
-			viewRect.right	= viewRect.left + (scrollRect.Width() - B_V_SCROLL_BAR_WIDTH)-5;
-			viewRect.bottom	= viewRect.top + (scrollRect.Height() - B_H_SCROLL_BAR_HEIGHT)-5;
-			clipper.Set(viewRect);
-			ConstrainClippingRegion(&clipper);*/
 			break;
 		}
 		case G_E_CONNECTING: {
@@ -619,7 +612,6 @@ void GraphEditor::MessageReceived(BMessage *message) {
 				foundRenderer = FindNodeRenderer(*toPointer);
 				if (foundRenderer)
 					to = foundRenderer->GetMessage();
-				//to = doc->FindObject(toPointer);
 			}
 			else {
 				message->FindPointer("Node::to",(void **)&to);
@@ -627,7 +619,6 @@ void GraphEditor::MessageReceived(BMessage *message) {
 				foundRenderer = FindNodeRenderer(*fromPointer);
 				if (foundRenderer)
 					from  = foundRenderer->GetMessage();
-			//	from	= doc->FindObject(fromPointer);
 			}
 			data->AddString("Name","Unbenannt");
 			if (to != NULL && from!=NULL) {
