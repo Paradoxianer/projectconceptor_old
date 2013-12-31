@@ -130,8 +130,7 @@ void ColorToolItem::Draw(BRect updateRect)
 
 void ColorToolItem::MouseDown(BPoint point)
 {
-	BButton::MouseDown(point);
-		if ((colorWindow == NULL) || (colorWindow->IsHidden()))
+	if ((colorWindow == NULL) || (colorWindow->IsHidden()))
 	{
 		//** Unterschied zwischen Vertikal und Horizontal beachten
 		BScreen *screenchecker=new BScreen(B_MAIN_SCREEN_ID);
@@ -180,16 +179,15 @@ void ColorToolItem::MouseDown(BPoint point)
 		colorWindow->Unlock();
 	}
 	SetEventMask(B_POINTER_EVENTS,B_LOCK_WINDOW_FOCUS | B_NO_POINTER_HISTORY);
+	BButton::MouseDown(point);
 }
 void ColorToolItem::MouseUp(BPoint point)
 {
-	BButton::MouseUp(point);
 	if (Bounds().Contains(point)) 
 	{
-	
-	//	parentToolBar->SetEventReciver(this);
+		//parentToolBar->SetEventReciver(this);
 		//parentToolBar->
-		SetEventMask(B_POINTER_EVENTS,B_LOCK_WINDOW_FOCUS | B_NO_POINTER_HISTORY);
+	//	SetEventMask(B_POINTER_EVENTS,B_LOCK_WINDOW_FOCUS | B_NO_POINTER_HISTORY);
 	}
 	else
 	{
@@ -197,6 +195,8 @@ void ColorToolItem::MouseUp(BPoint point)
 		Invoke();
 		colorWindow->Hide();
 	}
+	BButton::MouseUp(point);
+	
 }
 void ColorToolItem::MessageReceived(BMessage *message)
 {
