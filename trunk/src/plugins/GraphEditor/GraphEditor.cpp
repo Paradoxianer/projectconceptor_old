@@ -652,7 +652,7 @@ void GraphEditor::MessageReceived(BMessage *message) {
 			break;
 		}
 		case G_E_COLOR_CHANGED: {
-			rgb_color	tmpNewColor =	{255, 0, 0, 255};
+			rgb_color	tmpNewColor =	colorItem->GetColor();;
 			BMessage	*changeColorMessage	= new BMessage(P_C_EXECUTE_COMMAND);
 			changeColorMessage->AddString("Command::Name","ChangeValue");
 			changeColorMessage->AddBool("Node::selected",true);
@@ -660,7 +660,7 @@ void GraphEditor::MessageReceived(BMessage *message) {
 			valueContainer->AddString("name","FillColor");
 			valueContainer->AddString("subgroup","Node::Pattern");
 			valueContainer->AddInt32("type",B_INT32_TYPE);
-			valueContainer->AddInt32("newValue",*(int32 *)&colorItem->GetColor());
+			valueContainer->AddInt32("newValue",*(int32 *)&tmpNewColor);
 			changeColorMessage->AddMessage("valueContainer",valueContainer);
 			sentTo->SendMessage(changeColorMessage);
 			break;
@@ -748,7 +748,9 @@ void GraphEditor::InsertObject(BPoint where,bool deselect) {
 	BMessage	*newObject		= new BMessage(*nodeMessage);
 	BMessage	*newFont		= new BMessage(*fontMessage);
 	BMessage	*newPattern		= new BMessage(*patternMessage);
-	newPattern->ReplaceInt32("FillColor",*(int32 *)&colorItem->GetColor());
+	rgb_color	tmpNewColor =	colorItem->GetColor();;
+
+	newPattern->ReplaceInt32("FillColor",*(int32 *)&tmpNewColor);
 	newPattern->ReplaceFloat("PenSize",penSize->GetValue());
 
 	BMessage	*selectMessage	= new BMessage();
@@ -960,11 +962,13 @@ BMessage *GraphEditor::GenerateInsertCommand(uint32 newWhat)
 	BMessage	*data		    	= new BMessage();
 	int32		i                   = 0;
 	status_t    err                 = B_OK;
+	rgb_color	tmpColor			=colorItem->GetColor();
 	BPoint      where;
+	
 
     data->AddString("Name","Unbenannt");
     //insert new Node here*/
-	newPattern->ReplaceInt32("FillColor",*(int32 *)&colorItem->GetColor());
+	newPattern->ReplaceInt32("FillColor",*(int32 *)&tmpColor);
 	newPattern->ReplaceFloat("PenSize",penSize->GetValue());
     //** we need a good algorithm to find the best rect for this new node we just put it at 100,100**/
 	where = BPoint(100,100);
