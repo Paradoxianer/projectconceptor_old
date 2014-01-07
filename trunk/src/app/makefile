@@ -59,12 +59,15 @@ SRCS= 	About/AboutWindow.cpp \
 		ToolBar/PatternToolItem.cpp \
 		Tools/AFont.cpp \
 		Tools/BViewSplitter.cpp \
+		Tools/ColumnTypes.cpp \
+		Tools/ColumnListView.cpp \
 		Tools/Divider.cpp \
 		Tools/PCSavePanel.cpp \
 		Tools/PDocLoader.cpp \
 		Tools/Indexer.cpp \
 		Tools/InputRequestView.cpp \
  		Tools/InputRequest.cpp  \
+ 		Tools/LiveTextView.cpp  \
  		Tools/ShortCutFilter.cpp \
 		Tools/TextViewCompleter.cpp  \
 		Tools/tinyxml/tinystr.cpp \
@@ -101,7 +104,7 @@ LIBPATHS=
 #	additional paths to look for system headers
 #	thes use the form: #include <header>
 #	source file directories are NOT auto-included here
-SYSTEM_INCLUDE_PATHS =
+SYSTEM_INCLUDE_PATHS = /boot/system/develop/headers/private/support/
 
 #	additional paths to look for local headers
 #	thes use the form: #include "header"
@@ -173,7 +176,7 @@ default .DEFAULT:
 	mkdir -p ../../bin
 	cp -rf $(NAME) ../../bin
 	ln -sf $(NAME) ../../bin/ProjectConceptor.a
-	ln -sf /boot/home/config/add-ons/Translators/ ../../bin/placeTranslatorsHERE
+	ln -sf /boot/home/config/non-packaged/add-ons/Translators/ ../../bin/placeTranslatorsHERE
 
 
 
