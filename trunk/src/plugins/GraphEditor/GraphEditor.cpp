@@ -64,18 +64,18 @@ void GraphEditor::Init(void) {
 	nodeMessage->AddMessage("Node::Data",dataMessage);
 	//Preparing the standart FontMessage
 	fontMessage		= new BMessage(B_FONT_TYPE);
-	fontMessage->AddInt8("Encoding",be_plain_font->Encoding());
-	fontMessage->AddInt16("Face",be_plain_font->Face());
+	fontMessage->AddInt8("Font::Encoding",be_plain_font->Encoding());
+	fontMessage->AddInt16("Font::Face",be_plain_font->Face());
 	be_plain_font->GetFamilyAndStyle(&family,&style);
-	fontMessage->AddString("Family",(const char*)&family);
-	fontMessage->AddInt32("Flags", be_plain_font->Flags());
-	fontMessage->AddFloat("Rotation",be_plain_font->Rotation());
-	fontMessage->AddFloat("Shear",be_plain_font->Shear());
-	fontMessage->AddFloat("Size",be_plain_font->Size());
-	fontMessage->AddInt8("Spacing",be_plain_font->Spacing());
-	fontMessage->AddString("Style",(const char*)&style);
+	fontMessage->AddString("Font::Family",(const char*)&family);
+	fontMessage->AddInt32("Font::Flags", be_plain_font->Flags());
+	fontMessage->AddFloat("Font::Rotation",be_plain_font->Rotation());
+	fontMessage->AddFloat("Font::Shear",be_plain_font->Shear());
+	fontMessage->AddFloat("Font::Size",be_plain_font->Size());
+	fontMessage->AddInt8("Font::Spacing",be_plain_font->Spacing());
+	fontMessage->AddString("Font::Style",(const char*)&style);
 	rgb_color	fontColor			= {111, 151, 181, 255};
-	fontMessage->AddInt32("Color",*((int32 *)&fontColor));
+	fontMessage->AddInt32("Font::Color",*((int32 *)&fontColor));
 
 	//perparing Pattern Message
 	patternMessage	=new BMessage();
@@ -759,7 +759,7 @@ void GraphEditor::InsertObject(BPoint where,bool deselect) {
 		where.y=where.y-fmod(where.y,GridWidth());
 	}
 
-	newObject->AddRect("Node::frame",BRect(where,where+BPoint(100,80)));
+	newObject->AddRect("Node::frame",BRect(where,where+BPoint(100,40)));
 	newObject->AddMessage("Node::Font",newFont);
 	newObject->AddMessage("Node::Pattern",newPattern);
 	//preparing CommandMessage
