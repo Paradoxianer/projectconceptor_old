@@ -14,6 +14,7 @@ public:
 	
 	//++++++++++++++++PCommand
 	virtual	void			Undo(PDocument *doc,BMessage *undo);
+	// shows a Modal Window 
 	virtual	BMessage*		Do(PDocument *doc, BMessage *settings);
 	virtual	char*			Name(void){return "Find";};
 	virtual	void			AttachedToManager(void);
