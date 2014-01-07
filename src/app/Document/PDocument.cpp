@@ -126,10 +126,7 @@ void PDocument::MessageReceived(BMessage* message) {
 	TRACE();
 	switch(message->what) {
 		case MENU_FILE_SAVE: {
-			if (entryRef == NULL)
-				SavePanel();
-			else
-				Save();
+			Save();
 			break;
 		}
 		case MENU_FILE_SAVEAS: {
@@ -205,6 +202,13 @@ void PDocument::MessageReceived(BMessage* message) {
 			AutoSave();
 			break;
 		}
+		case MENU_SEARCH_FIND:
+		{
+			BMessage	*searchMessage	= new BMessage(P_C_EXECUTE_COMMAND);
+			searchMessage->AddString("Command::Name","Find");
+			searchMessage->AddBool("shadow",true);
+			commandManager->Execute(searchMessage);
+			break;		}
 
 		default:
 			BLooper::MessageReceived(message);
@@ -514,6 +518,8 @@ void PDocument::SetEntry(entry_ref *saveEntry,const char *name)
 void PDocument::Save(void)
 {
 	TRACE();
+	if (entryRef == NULL)
+		SavePanel();
 	status_t err 				= B_OK;
 	BTranslatorRoster	*roster				= BTranslatorRoster::Default();
 	BMessage			*archived			= new BMessage();
@@ -678,6 +684,7 @@ bool PDocument::QuitRequested(void)
 		else
 		{
 			Save();
+			Unlock();
 			returnValue	= true;
 		}
 		if (readLock)
