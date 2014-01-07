@@ -25,8 +25,9 @@ TYPE= SHARED
 #	are included from different directories.  Also note that spaces
 #	in folder names do not work well with this makefile.
 SRCS= 	Find.cpp \
-		FindPlugin.cpp
-
+		FindPlugin.cpp \
+		FindWindow.cpp 
+		
 		
 #	specify the resource files to use
 #	full path or a relative path to the resource file can be used.
@@ -66,18 +67,18 @@ LOCAL_INCLUDE_PATHS = \
 
 #	specify the level of optimization that you desire
 #	NONE, SOME, FULL
-OPTIMIZE= FULL
+OPTIMIZE= NONE
 
 #	specify any preprocessor symbols to be defined.  The symbols
 #	will be set to a value of 1.  For example specify DEBUG if you want
 #	DEBUG=1 to be set when compiling.
-DEFINES= 
+DEFINES= DEBUG
 
 #	specify special warning levels
 #	if unspecified default warnings will be used
 #	NONE = supress all warnings
 #	ALL = enable all warnings
-WARNINGS = NONE
+WARNINGS = ALL
 
 #	specify whether image symbols will be created
 #	so that stack crawls in the debugger are meaningful

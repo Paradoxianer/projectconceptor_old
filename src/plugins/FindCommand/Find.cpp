@@ -1,5 +1,5 @@
 #include "Find.h"
-
+#include "FindWindow.h"
 
 Find::Find():PCommand()
 {
@@ -27,6 +27,9 @@ void Find::Undo(PDocument *doc,BMessage *undo)
 
 BMessage* Find::Do(PDocument *doc, BMessage *settings)
 {
+	FindWindow *findWindow = new FindWindow(doc);
+	findWindow->Show();
+
 	BRect			*selectFrame		= new BRect();
 	BMessage		*node				= NULL;
 	BMessage		*commandMessage		= new BMessage();
@@ -104,6 +107,7 @@ void Find::DoFind(PDocument *doc,BRect *rect)
 
 void Find::DoFind(PDocument *doc,BMessage *container)
 {
+
 	BList			*selected			= doc->GetSelected();
 	set<BMessage*>		*changed			= doc->GetChangedNodes();
 	bool			selectTester		= false;
