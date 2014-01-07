@@ -16,19 +16,24 @@ void Insert::Undo(PDocument *doc,BMessage *undo) {
 	BMessage		*node				= new BMessage();
 	BMessage		*connection			= new BMessage();
 	int32			i					= 0;
+	status_t		err					= B_OK;
 	PCommand::Undo(doc,undo);
-	undo->FindPointer("Node::parent", (void **)&parentNode);
+	err = undo->FindPointer("Node::parent", (void **)&parentNode);
 	if (parentNode)
-		parentNode->FindPointer("Node::allNodes", (void **)&parentAllNodes);
-	while (undo->FindPointer("node",i,(void **)&node) & (node!=NULL) == B_OK) {
-		if (node->what != P_C_CONNECTION_TYPE){
-			allNodes->RemoveItem(node);
-			if (parentAllNodes)
-				parentAllNodes->RemoveItem(node);			
+		err = parentNode->FindPointer("Node::allNodes", (void **)&parentAllNodes);
+	while (undo->FindPointer("node",i,(void **)&node) == B_OK)
+	{
+		if (node!=NULL)
+		{
+			if (node->what != P_C_CONNECTION_TYPE){
+				allNodes->RemoveItem(node);
+				if (parentAllNodes)
+					parentAllNodes->RemoveItem(node);			
+			}
+			else
+				allConnectinos->RemoveItem(node);
+			changed->insert(node);
 		}
-		else
-			allConnectinos->RemoveItem(node);
-		changed->insert(node);
 		i++;
 	}
 	i=0;
