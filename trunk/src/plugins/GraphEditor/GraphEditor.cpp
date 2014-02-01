@@ -774,8 +774,13 @@ void GraphEditor::InsertObject(BPoint where,bool deselect) {
 
 void GraphEditor::InsertRenderObject(BMessage *node) {
 	TRACE();
-	Renderer *newRenderer = NULL;
+	AddRenderer(CreateRendererFor(node));
+}
+
+Renderer* GraphEditor::CreateRendererFor(BMessage *node)
+{
 	void	*tmpDoc	= NULL;
+	Renderer *newRenderer = NULL;
 	if (node->FindPointer("ProjectConceptor::doc",&tmpDoc)==B_OK)
 		node->ReplacePointer("ProjectConceptor::doc",doc);
 	else
@@ -792,8 +797,9 @@ void GraphEditor::InsertRenderObject(BMessage *node) {
 		break;
 	}
 	node->AddPointer(renderString,newRenderer);
-	AddRenderer(newRenderer);
+	return newRenderer;
 }
+
 
 void GraphEditor::AddRenderer(Renderer* newRenderer) {
 	TRACE();
@@ -817,6 +823,7 @@ void GraphEditor::RemoveRenderer(Renderer *wichRenderer) {
 			(wichRenderer->GetMessage())->RemoveName(renderString);
 
 		delete wichRenderer;
+		wichRenderer=NULL;
 	}
 /*	delete rendersensitv;
 	rendersensitv = new BRegion();
@@ -910,7 +917,7 @@ void GraphEditor::BringToFront(Renderer *wichRenderer) {
 	AddToList(wichRenderer,renderer->CountItems()+1);
 	Invalidate();
 	}
-    }
+   }
 
 
 void GraphEditor::SendToBack(Renderer *wichRenderer) {
@@ -1071,6 +1078,7 @@ void GraphEditor::DeleteFromList(Renderer *whichRenderer)
 		}
 	}
 	// if the deleted Rendere is a list we need to delete all subrendere too
+	//** need to reworked
 	if (whichRenderer->GetMessage()->what == P_C_GROUP_TYPE)
 	{
 		//should we dynamic cast this??

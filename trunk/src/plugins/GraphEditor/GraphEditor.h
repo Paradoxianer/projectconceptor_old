@@ -96,11 +96,13 @@ public:
 	virtual void			FrameResized(float width, float height);
 	//----------------BView
 
+			Renderer*		CreateRendererFor(BMessage *node);
 			void			AddRenderer(Renderer* newRenderer);
 			void			RemoveRenderer(Renderer* wichRenderer);
 
 			bool			GridEnabled(void){return gridEnabled;};
 			float			GridWidth(void){return gridWidth;};
+
 			Renderer*		FindRenderer(BPoint where);
 			Renderer*		FindNodeRenderer(BPoint where);
 			Renderer*		FindConnectionRenderer(BPoint where);
