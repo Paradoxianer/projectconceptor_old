@@ -41,12 +41,13 @@ BMessage* Group::Do(PDocument *doc, BMessage *settings) {
 	BMessage		*groupedNode		= NULL;
 	BMessage		*paretnNode			= NULL;
 	BMessage		*oldParentNode		= NULL;
-
+     
 	//the allNodes List and the allConnections List where the nodes come from
 	BList			*allNodes			= allNodes=doc->GetAllNodes();
 	
 	//the allNodes List and the allConnections List where the nodes should go to
 	BList			*gAllNodes			= NULL;
+	BList			*gAllOldNodes		= NULL;
 	BList			*gAllConnections	= NULL;
 	
 	bool			deselect			= true;
@@ -55,7 +56,7 @@ BMessage* Group::Do(PDocument *doc, BMessage *settings) {
 
 	//get all selected Nodes... this Nodes will be Members of the New Group
 	BList			*selected			= doc->GetSelected();
-	set<BMessage*>		*changed			= doc->GetChangedNodes();
+	set<BMessage*>	*changed			= doc->GetChangedNodes();
 	//detect all Connections wich belongs to the group
 	BList			*incoming			= NULL;
 	BList			*outgoing			= NULL;
@@ -73,23 +74,25 @@ BMessage* Group::Do(PDocument *doc, BMessage *settings) {
 			if (!allNodes->HasItem(node))
 				allNodes->AddItem(node);
 			//try to find the Lists for the Nodes where the grouped Node should go in
-			if (node->FindPointer("Node::allNodes",(void **)&gAllNodes) != B_OK)
-				node->AddPointer("Node::allNodes", gAllNodes = new BList());
+			if (node->FindPointer("Node::allNodes",(void **)&gAllNodes) != B_OK){
+				gAllNodes = new BList();
+				node->AddPointer("Node::allNodes", gAllNodes);
+			}
 			//all selectetd 
 			for (i=0;i<selected->CountItems();i++) {
 				groupedNode = (BMessage *)selected->ItemAt(i);
 				if ((groupedNode != NULL) && ( (groupedNode->what == P_C_CLASS_TYPE) || (groupedNode->what == P_C_GROUP_TYPE)) ) {
-					//add the parentNode so that we can find out to wich parent the new groupedNode belongs
+	/*				//add the parentNode so that we can find out to wich parent the new groupedNode belongs
 					if (groupedNode->FindPointer("Node::parent",(void **)&oldParentNode) == B_OK) {
 						undoMessage->AddPointer("changeNode",groupedNode);
 						undoMessage->AddPointer("oldParentNode",oldParentNode);
+						if (oldParentNode->FindPointer("Node::allNodes",(void **)&gAllOldNodes) == B_OK)
+							gAllOldNodes->RemoveItem(groupedNode);
 						groupedNode->ReplacePointer("Node::parent",node);
 					}
 					else
 						groupedNode->AddPointer("Node::parent",node);
-//					groupedNode->AddPointer("Node::parent",node);
-					gAllNodes->AddItem(groupedNode);
-					
+					gAllNodes->AddItem(groupedNode);					
 					//calculate the groupFrame
 					if (!groupFrame.IsValid())
 						groupedNode->FindRect("Node::frame",&groupFrame);
@@ -98,7 +101,21 @@ BMessage* Group::Do(PDocument *doc, BMessage *settings) {
 						groupFrame = groupFrame | groupedNodeFrame;
 					}
 					//add this to the changed List
-					changed->insert(groupedNode);
+					changed->insert(groupedNode);*/
+					//check if this node already belongs to a group if not we can add it to the new group
+					if (groupedNode->FindPointer("Node::parent",(void **)&oldParentNode) != B_OK) {
+						groupedNode->AddPointer("Node::parent",node);
+						gAllNodes->AddItem(groupedNode);					
+						//calculate the groupFrame
+						if (!groupFrame.IsValid())
+							groupedNode->FindRect("Node::frame",&groupFrame);
+						else {
+							groupedNode->FindRect("Node::frame",&groupedNodeFrame);
+							groupFrame = groupFrame | groupedNodeFrame;
+						}
+						//add this to the changed List
+						changed->insert(groupedNode);
+					}
 				}
 			}
 			if (groupedNodeFrame.IsValid()) {
@@ -120,7 +137,6 @@ BMessage* Group::Do(PDocument *doc, BMessage *settings) {
 			//**check if there is a passed "docRect"
 		}
 	}
-
 	settings->RemoveName("Group::Undo");
 	settings->AddMessage("Group::Undo",undoMessage);
 	settings	= PCommand::Do(doc,settings);
@@ -135,3 +151,5 @@ void Group::AttachedToManager(void) {
 
 void Group::DetachedFromManager(void) {
 }
+
+
