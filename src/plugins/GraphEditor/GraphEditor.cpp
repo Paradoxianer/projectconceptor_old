@@ -305,14 +305,9 @@ void GraphEditor::ValueChanged() {
 	void		*pointer		= NULL;
 	BRect		frame;
 	BRect		invalid;
-	PRINT(("GraphEditor::changedNode->CountItems() %ld:\n",changedNodes->size()));
 	int i=0;
 	for ( it=changedNodes->begin();it!=changedNodes->end();it++) {
-	    i++;
-//	for (int32 i=0;i<changedNodes->CountItems();i++) {
-		PRINT(("GraphEditor::changedNode %ld:\n",i));
 		node = *it;
-		//node->PrintToStream();
 		if (node->FindPointer(renderString,(void **)&painter) == B_OK) {
 			if ((allConnections->HasItem(node))||(allNodes->HasItem(node)))
 				painter->ValueChanged();
@@ -320,7 +315,7 @@ void GraphEditor::ValueChanged() {
 				RemoveRenderer(FindRenderer(node));
 		}
 		else {
-			//**check if this node is in the node or connection list because if it is not it´s a nodd frome a subgroup or it was deleted
+			//**check if this node is in the node or connection list because if it is not it´s a node frome a subgroup or it was deleted
 			if (((allConnections->HasItem(node))||
 			     (allNodes->HasItem(node))) &&
 			    (node->FindPointer("Parent",&pointer) !=B_OK))
@@ -818,12 +813,14 @@ void GraphEditor::RemoveRenderer(Renderer *wichRenderer) {
 			activRenderer = NULL;
 		if (mouseReciver == wichRenderer)
 			mouseReciver = NULL;
-		renderer->RemoveItem(wichRenderer);
 		if (wichRenderer->GetMessage())
 			(wichRenderer->GetMessage())->RemoveName(renderString);
-
-		delete wichRenderer;
-		wichRenderer=NULL;
+		//check if this rendere belongs to the grapheditor or if not it belongs to a group so the group will take care to remove the renderer from its renderlist
+		if (renderer->HasItem(wichRenderer)){	
+			renderer->RemoveItem(wichRenderer);
+			delete wichRenderer;
+			wichRenderer=NULL;
+		}
 	}
 /*	delete rendersensitv;
 	rendersensitv = new BRegion();
@@ -882,18 +879,9 @@ Renderer* GraphEditor::FindConnectionRenderer(BPoint where) {
 }
 
 Renderer* GraphEditor::FindRenderer(BMessage *container) {
-//	int32		i					= 0;
 	Renderer	*currentRenderer	= NULL;
-//	bool		found				= false;
-
-	/*while ((i<renderer->CountItems()) && (!found))
-	{
-		currentRenderer= (Renderer*)renderer->ItemAt(i);
-		if (currentRenderer->GetMessage() == container)
-			found=true;
-		i++;
-	}*/
-	if ( (container->FindPointer(renderString,(void **) &currentRenderer) == B_OK) && (currentRenderer) )
+	if ( (container->FindPointer(renderString,(void **) &currentRenderer) == B_OK) 
+		&& (currentRenderer) && renderer->HasItem(currentRenderer) )
 		return currentRenderer;
 	else
 		return NULL;
@@ -1060,7 +1048,7 @@ void GraphEditor::DeleteFromList(Renderer *whichRenderer)
 	int32		i				= 0;
 	BMessage	*tmpNode		= NULL;
 	renderer->RemoveItem(whichRenderer);
-	//remove all Connections wich belongs to this node.. so that also the connections  are able to come the from
+	//remove all Connections wich belongs to this node..
 	if (whichRenderer->GetMessage()->FindPointer("Node::incoming",(void **)&connectionList) == B_OK)
 	{
 		for (i = 0; i< connectionList->CountItems();i++)
