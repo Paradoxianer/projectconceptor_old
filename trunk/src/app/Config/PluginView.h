@@ -5,6 +5,7 @@
 #include <interface/Window.h>
 #include <ListView.h>
 #include <SplitView.h>
+#include <CardLayout.h>
 
 
 #include "ProjectConceptorDefs.h"
@@ -30,10 +31,11 @@ protected:
 
 private:
                 void			Init();
-        virtual void                    BuildPluginList();
-        PluginManager                   *pluginManager;
-        BListView                       *pluginListView;
-        BView                           *configContainer;
+        virtual void            BuildPluginList();
+        PluginManager           *pluginManager;
+        BListView               *pluginListView;
+        BView                   *configContainer;
+        BCardLayout				*cardLayout;
 };
 
 
