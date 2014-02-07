@@ -98,8 +98,8 @@ void GroupRenderer::InsertRenderObject(BMessage *node) {
 		node->ReplacePointer("ProjectConceptor::doc",doc);
 	else
 		node->AddPointer("ProjectConceptor::doc",doc);
-	//find the pointer to the renderobject because the node was somehow added to the Grapheditor
-	if (node->FindPointer(editor->RenderString(),(void **)&newRenderer)== B_OK);
+	//find the pointer to the renderobject because the node was somehow added to the Grapheditor and has therefore already a renderobject
+	if (node->FindPointer(editor->RenderString(),(void **)&newRenderer)== B_OK)
 		AddRenderer(newRenderer);
 	else
 		AddRenderer(editor->CreateRendererFor(node));
@@ -122,18 +122,24 @@ void GroupRenderer::RemoveRenderer(Renderer *wichRenderer) {
 Renderer* GroupRenderer::FindRenderer(BMessage *container) {
 	int32		i					= 0;
 	Renderer	*currentRenderer	= NULL;
-	bool		found				= false;
+	if ( (container->FindPointer(editor->RenderString(),(void **) &currentRenderer) == B_OK) 
+		&& (currentRenderer) && renderer->HasItem(currentRenderer) )
+		return currentRenderer;
+	else
+		return NULL;
+
+/*	bool		found				= false;
 	int32		count				= renderer->CountItems();
 	while ((i<count) && (!found)) {
 		currentRenderer= (Renderer*)renderer->ItemAt(i);
 		if (currentRenderer->GetMessage() == container)
 			found=true;
 		i++;
-	}
+	}po
 	if (found)
 		return currentRenderer;
 	else
-		return NULL;
+		return NULL;*/
 }
 
 
