@@ -47,7 +47,7 @@ public:
 	virtual	void			Quit(void);
 protected:
 			void			ChangeLanguage(void);
-			void			FindNodes(BMessage *node, string);
+			void			FindNodes(BMessage *node, BString *string);
 			bool			FindInNode(BMessage *node,BString *string);
 			bool			advanced;
 private:

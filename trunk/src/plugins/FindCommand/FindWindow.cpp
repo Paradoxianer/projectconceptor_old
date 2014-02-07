@@ -41,7 +41,7 @@ void FindWindow::CreateViews()
 	AddChild(
 		BGroupLayoutBuilder(B_VERTICAL)
 		.Add(BGroupLayoutBuilder(B_HORIZONTAL)
-			.SetInsets(10,10,10,10);
+			.SetInsets(10,10,10,10)
 			.Add(new BStringView("findLabel","Find"))
 			.Add(searchText)
 			
@@ -91,7 +91,7 @@ void FindWindow::MessageReceived(BMessage *message)
 		break;
 		case 'find':
 		{
-			FindNodes(searchText->Text());
+		//	FindNodes(searchText->Text());
 		}
 		break; 
 	}
@@ -107,13 +107,13 @@ void FindWindow::FindNodes(BMessage *node,BString *string)
 	for (int32 i = 0; node->GetInfo(B_MESSAGE_TYPE, i,(char **) &attribName, &type, &count) == B_OK; i++)
 	{
 		if (node->FindMessage(attribName,count-1,attribMessage) == B_OK)
-			found = found | FindInMessage(attribMessage, string);
+			found = found | FindInNode(attribMessage, string);
 	}
 }
 
-bool FindWindow::FindInMessage(BMessage *node,BString *string)
+bool FindWindow::FindInNode(BMessage *node,BString *string)
 {
-	
+	return false;
 }
 
 
