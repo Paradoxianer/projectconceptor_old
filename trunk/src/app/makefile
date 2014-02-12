@@ -128,23 +128,23 @@ LOCAL_INCLUDE_PATHS =	. \
 #	specify any preprocessor symbols to be defined.  The symbols
 #	will be set to a value of 1.  For example specify DEBUG if you want
 #	DEBUG=1 to be set when compiling.
-DEFINES =   DEBUG
+#DEFINES =   DEBUG
 
 #	specify special warning levels
 #	if unspecified default warnings will be used
 #	NONE = supress all warnings
 #	ALL = enable all warnings
-WARNINGS = NONE
+#WARNINGS = NONE
 
 #	specify whether image symbols will be created
 #	so that stack crawls in the debugger are meaningful
 #	if TRUE symbols will be created
-SYMBOLS = TRUE
+#SYMBOLS = TRUE
 
 #	specify debug settings
 #	if TRUE will allow application to be run from
 #	a source-level debugger
-DEBUGGER = TRUE
+#DEBUGGER = TRUE
 
 #	specify additional compiler flags for all files
 COMPILER_FLAGS =
@@ -173,10 +173,11 @@ include $(BUILDHOME)/etc/makefile-engine
 
 
 default .DEFAULT:
-	mkdir -p ../../bin
-	cp -rf $(NAME) ../../bin
-	ln -sf $(NAME) ../../bin/ProjectConceptor.a
-	ln -sf /boot/home/config/non-packaged/add-ons/Translators/ ../../bin/placeTranslatorsHERE
+	mkdir -p ../../$(APP_DIR)
+	cp -rf $(NAME) ../../$(APP_DIR)
+	ln -sf $(NAME) ../../$(APP_DIR)/ProjectConceptor.a
+	cp -rf ../.PackageInfo ../../bin
+#	ln -sf /boot/home/config/non-packaged/add-ons/Translators/ ../../bin/placeTranslatorsHERE
 
 
 
