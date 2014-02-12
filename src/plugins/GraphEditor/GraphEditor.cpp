@@ -808,6 +808,7 @@ void GraphEditor::AddRenderer(Renderer* newRenderer) {
 
 void GraphEditor::RemoveRenderer(Renderer *wichRenderer) {
 	TRACE();
+	//** Find the Node for the Renderer check if it has a parent... then remove the renderer also from the nodeList of the Groupparent
 	if (wichRenderer != NULL) {
 		if (activRenderer == wichRenderer)
 			activRenderer = NULL;

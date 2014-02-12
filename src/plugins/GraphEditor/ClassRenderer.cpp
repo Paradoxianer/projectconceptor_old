@@ -293,7 +293,7 @@ void ClassRenderer::Draw(BView *drawOn, BRect updateRect){
 	drawOn->SetHighColor(drawColor);
 	drawOn->FillRoundRect(frame, xRadius, yRadius);
 
-
+/*
 	drawOn->SetPenSize(1.0);
 	drawOn->BeginLineArray(20);
 	drawOn->AddLine(BPoint(frame.left+xRadius,frame.top+1),BPoint(frame.right-xRadius,frame.top+1),tint_color(drawColor,0));
@@ -316,9 +316,9 @@ void ClassRenderer::Draw(BView *drawOn, BRect updateRect){
 	drawOn->AddLine(BPoint(frame.left,frame.top+18),BPoint(frame.right,frame.top+18),tint_color(drawColor,0.85));
 	drawOn->AddLine(BPoint(frame.left,frame.top+19),BPoint(frame.right,frame.top+19),tint_color(drawColor,0.9));
 	drawOn->AddLine(BPoint(frame.left,frame.top+20),BPoint(frame.right,frame.top+20),tint_color(drawColor,0.95));
-	drawOn->EndLineArray();
+	drawOn->EndLineArray();*/
 	
-	//calculate all Stuff for the Konnection renderer
+	//calculate all Stuff for the Connection renderer
 	float	yOben	= frame.top+frame.Height()/2 - circleSize;
 	float	yMitte	= yOben + circleSize;
 	float	yUnten	= yMitte + circleSize;
