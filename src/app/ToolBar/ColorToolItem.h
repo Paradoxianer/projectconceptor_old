@@ -74,5 +74,6 @@ protected:
 			uint32			state;
 			BWindow			*colorWindow;
 			BColorControl	*colorPicker;
+			uint32			oldEventMask;
 };
 #endif

@@ -177,23 +177,28 @@ void ColorToolItem::MouseDown(BPoint point)
 		}
 		colorWindow->Show();
 		colorWindow->Unlock();
+		oldEventMask=EventMask();
+		SetEventMask(B_POINTER_EVENTS,B_LOCK_WINDOW_FOCUS | B_NO_POINTER_HISTORY);
 	}
-	SetEventMask(B_POINTER_EVENTS,B_LOCK_WINDOW_FOCUS | B_NO_POINTER_HISTORY);
 	BButton::MouseDown(point);
 }
 void ColorToolItem::MouseUp(BPoint point)
 {
+//***check if the point is in the Color Window coordinates
 	if (Bounds().Contains(point)) 
 	{
 		//parentToolBar->SetEventReciver(this);
 		//parentToolBar->
-	//	SetEventMask(B_POINTER_EVENTS,B_LOCK_WINDOW_FOCUS | B_NO_POINTER_HISTORY);
+		//SetEventMask(B_POINTER_EVENTS,B_LOCK_WINDOW_FOCUS | B_NO_POINTER_HISTORY);
+		//SetEventMask(oldEventMask);
 	}
 	else
 	{
-		SetEventMask(0,B_LOCK_WINDOW_FOCUS | B_NO_POINTER_HISTORY);
-		Invoke();
+		SetEventMask(oldEventMask);
 		colorWindow->Hide();
+		//SetEventMask(0,B_LOCK_WINDOW_FOCUS | B_NO_POINTER_HISTORY);
+		Invoke();
+	
 	}
 	BButton::MouseUp(point);
 	
