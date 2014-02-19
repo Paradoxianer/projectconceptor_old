@@ -204,8 +204,11 @@ void PDocument::MessageReceived(BMessage* message) {
 		}
 		case MENU_SEARCH_FIND:
 		{
+			BString		*searchString	= new BString();
 			BMessage	*searchMessage	= new BMessage(P_C_EXECUTE_COMMAND);
 			searchMessage->AddString("Command::Name","Find");
+			if (message->FindString("searchString",searchString)==B_OK)
+				searchMessage->AddString("searchString",*searchString);
 			searchMessage->AddBool("shadow",true);
 			commandManager->Execute(searchMessage);
 			break;		}

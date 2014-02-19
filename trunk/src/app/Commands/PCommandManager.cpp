@@ -271,7 +271,7 @@ void PCommandManager::Undo(BMessage *undo) {
 				if (undoPCommand != NULL)
 					undoPCommand->Undo(doc,msg);
 				else
-					PRINT(("ERROR:\t PCommandManager","Didnt found the PCommand\n"));
+					PRINT(("ERROR:\t PCommandManager - Didnt found the PCommand\n"));
 				undoStatus--;
 				if (undoStatus<0)
 					undoStatus = -1;
@@ -302,7 +302,7 @@ void PCommandManager::Redo(BMessage *redo) {
 				if (redoPCommand)
 					redoPCommand->Do(doc,msg);
 				else
-					PRINT(("ERROR\tPCommandManager","Coudn´t find the PCommand\n"));
+					PRINT(("ERROR\tPCommandManager - Coudn´t find the PCommand\n"));
 			}
 			i++;
 			undoStatus++;
