@@ -21,9 +21,12 @@ public:
 	virtual	void			DetachedFromManager(void);
 
 protected:
-	virtual	void			DoFind(PDocument *doc ,BRect *rect);
+	virtual	BList*			FindNodes(PDocument *doc,BString *searchTerm);
+	virtual bool			FindInNode(BMessage *node,BString *searchTerm);
+
+	/*virtual	void			DoFind(PDocument *doc ,BRect *rect);
 	virtual	void			DoFind(PDocument *doc ,BMessage *container);
-	virtual void			DoFindAll(PDocument *doc);
+	virtual void			DoFindAll(PDocument *doc);*/
 private:
 	//----------------PCommand
 };
