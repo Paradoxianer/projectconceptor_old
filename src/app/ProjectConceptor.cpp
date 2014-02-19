@@ -155,7 +155,6 @@ void ProjektConceptor::ReadyToRun() {
 	//creat settingsfolder
 	BPath settings;
 	find_directory(B_USER_SETTINGS_DIRECTORY, &settings, true);
-	char p[PATH_MAX];
 	BDirectory *settingsDir = new BDirectory(settings.Path());
 	status_t err= B_OK;
 	err = settingsDir->CreateDirectory("ProjectConceptor", NULL);

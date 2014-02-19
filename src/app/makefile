@@ -178,7 +178,7 @@ default .DEFAULT:
 	ln -sf $(NAME) ../../$(APP_DIR)/ProjectConceptor.a
 	cp -rf ../.PackageInfo ../../bin
 	mkdir -p ../../bin/data/deskbar/menu/Applications
-	ln -sf ../../../../$(NAME) ../../bin/data/deskbar/menu/Applications
+	ln -sf ../../../../apps/ProjectConceptor/$(NAME) ../../bin/data/deskbar/menu/Applications
 #	ln -sf /boot/home/config/non-packaged/add-ons/Translators/ ../../bin/placeTranslatorsHERE
 
 
