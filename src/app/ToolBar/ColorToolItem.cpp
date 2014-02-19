@@ -15,6 +15,7 @@ ColorToolItem::ColorToolItem(const char *name, rgb_color newValue,BMessage *msg)
 	colorPicker->SetValue(newValue);
 //	SetMessage(msg);
 }
+
 ColorToolItem::ColorToolItem(BMessage *archive):BaseItem(""),BButton(archive)
 {
 	status_t	err;
@@ -35,7 +36,7 @@ ColorToolItem::ColorToolItem(BMessage *archive):BaseItem(""),BButton(archive)
 	if (err == B_OK)
 		SetTarget(tmpMessenger);	
 	BPoint	lefttop(1,1);
-	colorPicker =new  BColorControl(lefttop,B_CELLS_64x4,4.0,"ColorPicker",new BMessage(COLOR_CHANGED));
+	colorPicker =new  BColorControl(lefttop,B_CELLS_32x8,1.0,"ColorPicker",new BMessage(COLOR_CHANGED));
 }
 void ColorToolItem::Init(void)
 {
@@ -184,24 +185,34 @@ void ColorToolItem::MouseDown(BPoint point)
 }
 void ColorToolItem::MouseUp(BPoint point)
 {
-//***check if the point is in the Color Window coordinates
+	//***check if the point is in the Color Window coordinates
 	if (Bounds().Contains(point)) 
 	{
 		//parentToolBar->SetEventReciver(this);
 		//parentToolBar->
 		//SetEventMask(B_POINTER_EVENTS,B_LOCK_WINDOW_FOCUS | B_NO_POINTER_HISTORY);
 		//SetEventMask(oldEventMask);
+		SetEventMask(oldEventMask);
+		colorWindow->Hide();
+		Invoke();
+
 	}
 	else
 	{
-		SetEventMask(oldEventMask);
-		colorWindow->Hide();
+		if (!colorWindow-> IsHidden())
+		{
+			BPoint screenPoint=ConvertToScreen(point);
+			if (!colorWindow->Frame().Contains(screenPoint))
+			{
+				colorWindow->Hide();
+				SetEventMask(oldEventMask);
+
+			}
+		}
 		//SetEventMask(0,B_LOCK_WINDOW_FOCUS | B_NO_POINTER_HISTORY);
-		Invoke();
 	
 	}
 	BButton::MouseUp(point);
-	
 }
 void ColorToolItem::MessageReceived(BMessage *message)
 {
@@ -212,7 +223,7 @@ void ColorToolItem::MessageReceived(BMessage *message)
 	}
 	BButton::MessageReceived(message);
 }
-status_t ColorToolItem::Invoke(BMessage *message)
+/*status_t ColorToolItem::Invoke(BMessage *message)
 {
 	status_t err = B_OK;
 	if (colorWindow)
@@ -227,4 +238,4 @@ status_t ColorToolItem::Invoke(BMessage *message)
 			err = B_ERROR;
 	}
 	return err;
-}
+}*/
