@@ -82,7 +82,16 @@ void FindWindow::MessageReceived(BMessage *message)
 	switch(message->what)
 	{
 		case 'ok':
-		
+		{
+			//**Use a small trick an tell the PDocument that the menu was invoked but with a given searchstring
+			BMessage	*searchMessage	= new BMessage(MENU_SEARCH_FIND);
+			//searchMessage->AddString("Command::Name","Find");
+			searchMessage->AddString("searchString",searchText->Text());
+			//searchMessage->AddBool("shadow",true);
+			BMessenger	sender(doc);
+			sender.SendMessage(searchMessage);
+			BWindow::Quit();
+		}
 		break;
 		case 'cl':
 		{
@@ -91,13 +100,13 @@ void FindWindow::MessageReceived(BMessage *message)
 		break;
 		case 'find':
 		{
-		//	FindNodes(searchText->Text());
+		
 		}
 		break; 
 	}
 }
 
-void FindWindow::FindNodes(BMessage *node,BString *string)
+void FindWindow::FindNodes(BMessage *node,BString *search)
 {
 	char		*attribName		= NULL;
 	BMessage	*attribMessage	= new BMessage();
@@ -107,13 +116,37 @@ void FindWindow::FindNodes(BMessage *node,BString *string)
 	for (int32 i = 0; node->GetInfo(B_MESSAGE_TYPE, i,(char **) &attribName, &type, &count) == B_OK; i++)
 	{
 		if (node->FindMessage(attribName,count-1,attribMessage) == B_OK)
-			found = found | FindInNode(attribMessage, string);
+			found = found | FindInNode(attribMessage, search);
 	}
 }
 
-bool FindWindow::FindInNode(BMessage *node,BString *string)
+bool FindWindow::FindInNode(BMessage *node,BString *search)
 {
-	return false;
+	char		*attribName		= NULL;
+	BMessage	*attribMessage	= new BMessage();
+	BString		*dataString		= NULL;	
+	uint32		type			= B_ANY_TYPE;
+	int32		count			= 0;
+	bool		found			= false;
+	int32		i				= 0;
+	//first iterate through all Strings
+	while ((node->GetInfo(B_STRING_TYPE, i,(char **) &attribName, &type, &count) == B_OK) && !found)
+	{
+		if ((node->FindString(attribName,count,dataString)==B_OK) && (dataString != NULL))
+		{
+			found = dataString->FindFirst(*search)!=B_ERROR;
+		}
+		i++;
+	}
+	//check all subnodes / sub bmessages
+	i=0;
+	while ((node->GetInfo(B_MESSAGE_TYPE, i,(char **) &attribName, &type, &count) == B_OK) && !found)
+	{
+		if ((node->FindMessage(attribName,count,attribMessage) == B_OK) && (attribMessage != NULL))
+			found = FindInNode(attribMessage, search);
+		i++;
+	}
+	return found;
 }
 
 
