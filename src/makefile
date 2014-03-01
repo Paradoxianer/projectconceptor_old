@@ -39,7 +39,7 @@ export DEFINES= DEBUG
 #	if unspecified default warnings will be used
 #	NONE = supress all warnings
 #	ALL = enable all warnings
-export WARNINGS = ALL
+export WARNINGS = NONE
 #	specify whether image symbols will be created
 #	so that stack crawls in the debugger are meaningful
 #	if TRUE symbols will be created
