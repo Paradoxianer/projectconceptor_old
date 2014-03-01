@@ -1048,32 +1048,31 @@ void GraphEditor::DeleteFromList(Renderer *whichRenderer)
 	BList		*connectionList	= NULL;
 	int32		i				= 0;
 	BMessage	*tmpNode		= NULL;
-	renderer->RemoveItem(whichRenderer);
-	//remove all Connections wich belongs to this node..
-	if (whichRenderer->GetMessage()->FindPointer("Node::incoming",(void **)&connectionList) == B_OK)
-	{
-		for (i = 0; i< connectionList->CountItems();i++)
-		{
-			tmpNode = (BMessage *)connectionList->ItemAt(i);
-			renderer->RemoveItem(FindRenderer(tmpNode));
+	if (renderer->HasItem(whichRenderer) == true) {
+		renderer->RemoveItem(whichRenderer);
+		//remove all Connections wich belongs to this node..
+		if (whichRenderer->GetMessage()->FindPointer("Node::incoming",(void **)&connectionList) == B_OK) {
+			for (i = 0; i< connectionList->CountItems();i++) {
+				tmpNode = (BMessage *)connectionList->ItemAt(i);
+				renderer->RemoveItem(FindRenderer(tmpNode));
+			}
 		}
-	}
-	if (whichRenderer->GetMessage()->FindPointer("Node::outgoing",(void **)&connectionList) == B_OK)
-	{
-		for (i = 0; i< connectionList->CountItems();i++)
-		{
-			tmpNode = (BMessage *)connectionList->ItemAt(i);
-			renderer->RemoveItem(FindRenderer(tmpNode));
+		if (whichRenderer->GetMessage()->FindPointer("Node::outgoing",(void **)&connectionList) == B_OK) {
+			for (i = 0; i< connectionList->CountItems();i++) {
+				tmpNode = (BMessage *)connectionList->ItemAt(i);
+				renderer->RemoveItem(FindRenderer(tmpNode));
+			}
 		}
-	}
-	// if the deleted Rendere is a list we need to delete all subrendere too
-	//** need to reworked
-	if (whichRenderer->GetMessage()->what == P_C_GROUP_TYPE)
-	{
-		//should we dynamic cast this??
-		GroupRenderer	*groupPainter	= (GroupRenderer *)whichRenderer;
-		for (int32 i = 0; i<groupPainter->RenderList()->CountItems();i++)
-			DeleteFromList((Renderer *)groupPainter->RenderList()->ItemAt(i));
+		// if the deleted Rendere is a list we need to delete all subrendere too
+		//** need to reworked
+		if (whichRenderer->GetMessage()->what == P_C_GROUP_TYPE) {
+			GroupRenderer	*groupPainter	= dynamic_cast <GroupRenderer *>(whichRenderer);
+			if (groupPainter != NULL){		
+				int32 gcount= groupPainter->RenderList()->CountItems();
+				for (int32 i = 0; i<gcount;i++)
+					DeleteFromList((Renderer *)groupPainter->RenderList()->ItemAt(i));
+			}
+		}
 	}
 }
 
