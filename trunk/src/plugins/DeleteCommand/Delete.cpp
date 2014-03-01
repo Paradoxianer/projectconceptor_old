@@ -35,34 +35,15 @@ void Delete::Undo(PDocument *doc,BMessage *undo) {
 }
 
 BMessage* Delete::Do(PDocument *doc, BMessage *settings) {
-/*	BMessage	*node				= new BMessage();
-	BMessage	*commandMessage		= PCommand::Do(doc,settings);
-	BList		*parentGroupList	= NULL;
-	BMessage	*connection			= new BMessage();
-	int32		i					= 0;
-	while (settings->FindPointer("node",i,(void **)&node))
-	{
-		if (settings->FindPointer("parentGroupList",i,(void **)&parentGroupList))
-			parentGroupList->RemoveItem(node);
-		else
-			(doc->GetAllNodes())->RemoveItem(node);
-		i++;
-	}
-	i = 0;
-	while (settings->FindPointer("connection",i,(void **)&connection))
-	{
-		i++;
-		(doc->GetAllConnections())->RemoveItem(connection);
-	}
-	return commandMessage;*/
-	//**Todo
 	BMessage		*undoMessage		= new BMessage();
 	BList			*selected			= doc->GetSelected();
 	BList			*connections		= doc->GetAllConnections();
 	BList			*allNodes			= doc->GetAllNodes();
-	set<BMessage*>		*changed			= doc->GetChangedNodes();
+	BList			*allNodesGroup		= NULL;
+	set<BMessage*>	*changed			= doc->GetChangedNodes();
 	BMessage		*node				= NULL;
 	BMessage		*connection			= NULL;
+	BMessage		*parent				= NULL;
 	BList			*outgoing			= NULL;
 	BList			*incoming			= NULL;
 	int32			i					= 0;
