@@ -49,6 +49,8 @@ void GroupRenderer::ValueChanged()
 {
 	TRACE();
 	set<BMessage*>	*changedNodes	= doc->GetChangedNodes();
+	BList			*allDocNodes	= doc->GetAllNodes();
+
 	set<BMessage*>::iterator it;
 	BMessage	*node			= NULL;
 	Renderer	*painter		= NULL;
@@ -64,9 +66,15 @@ void GroupRenderer::ValueChanged()
 			else
 				RemoveRenderer(painter);
 		}
-		else
-			if (allNodes->HasItem(node))
-				InsertRenderObject(node);		
+		else {
+			if (allNodes->HasItem(node) == true)
+				if (allDocNodes->HasItem(node) == true )
+					InsertRenderObject(node);
+				else
+					allNodes->RemoveItem(node);
+			else
+				RemoveRenderer(painter);
+		}
 	}
 }
 
