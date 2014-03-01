@@ -39,7 +39,7 @@ BMessage* Delete::Do(PDocument *doc, BMessage *settings) {
 	BList			*selected			= doc->GetSelected();
 	BList			*connections		= doc->GetAllConnections();
 	BList			*allNodes			= doc->GetAllNodes();
-	BList			*allNodesGroup		= NULL;
+	BList			*gallNodes			= NULL;
 	set<BMessage*>	*changed			= doc->GetChangedNodes();
 	BMessage		*node				= NULL;
 	BMessage		*connection			= NULL;
@@ -53,7 +53,7 @@ BMessage* Delete::Do(PDocument *doc, BMessage *settings) {
 		changed->insert(node);
 		undoMessage->AddPointer("node",node);
 		if (node->FindPointer("Node::outgoing",(void **)&outgoing) == B_OK) {
-			for (int32 i=0;i<outgoing->CountItems();i++) {
+			for (i=0;i<outgoing->CountItems();i++) {
 				connection= (BMessage *)outgoing->ItemAt(i);
 				connections->RemoveItem(connection);
 				changed->insert(connection);
@@ -61,11 +61,29 @@ BMessage* Delete::Do(PDocument *doc, BMessage *settings) {
 			}
 		}
 		if (node->FindPointer("Node::incoming",(void **)&incoming) == B_OK) {
-			for (int32 i=0;i<incoming->CountItems();i++) {
+			for (i=0;i<incoming->CountItems();i++) {
 				connection= (BMessage *)incoming->ItemAt(i);
 				connections->RemoveItem(connection);
 				changed->insert(connection);
 				undoMessage->AddPointer("node",connection);
+			}
+		}
+		//** find all NOdes wich belong to a group and delete them - korrekt the undopart??
+		if  (node->what == P_C_GROUP_TYPE){
+			if (node->FindPointer("Node::allNodes", (void **)&gallNodes) == B_OK)
+				for (i=0; i< gallNodes->CountItems(); i++){
+					allNodes->RemoveItem(gallNodes->ItemAt(i));
+					connections->RemoveItem(gallNodes->ItemAt(i));
+					changed->insert((BMessage*)gallNodes->ItemAt(i));
+					undoMessage->AddPointer("node",gallNodes->ItemAt(i));
+					//***somehow store the grouping...
+				}
+		}
+		if (node->FindPointer("Parent",(void **)&parent) != B_OK && parent != NULL) {
+			if (parent->FindPointer("Node::allNodes", (void **)&gallNodes) == B_OK && gallNodes != NULL){
+				gallNodes->RemoveItem(node);
+				changed->insert(parent);
+				//** do the undopart
 			}
 		}
 	}
