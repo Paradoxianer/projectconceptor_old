@@ -255,23 +255,15 @@ void ClassRenderer::Draw(BView *drawOn, BRect updateRect) {
 	float	yOben	= frame.top+frame.Height()/2 - circleSize;
 	float	yMitte	= yOben + circleSize;
 	float	yUnten	= yMitte + circleSize;
-	/*drawOn->SetHighColor(255,255,255,255);
-	BRect circleRect(frame.right-(circleSize*2),yOben,frame.right,yUnten);
-	circleRect.OffsetBy(-1,0);
-	drawOn->FillEllipse(circleRect);*/
-
 	
-	#ifdef B_ZETA_VERSION_1_0_0
-		drawOn->SetHighColor(ui_color(B_UI_DOCUMENT_LINK_COLOR));
-	#else
-		drawOn->SetHighColor(0,0,255,255);
-	#endif
+
+	drawOn->SetHighColor(0,0,0,255);
 	
 	/*drawOn->FillTriangle(BPoint(frame.left,yOben),BPoint(frame.left+circleSize,yMitte),BPoint(frame.left,yUnten));
 	drawOn->FillTriangle(BPoint(frame.right-circleSize,yOben),BPoint(frame.right,yMitte),BPoint(frame.right-circleSize,yUnten));
 	//pattern resizePattern = { 0x55, 0x55, 0x55, 0x55, 0x55,0x55, 0x55, 0x55 };*/
 	
-	drawOn->FillTriangle(BPoint(frame.right-(3*circleSize),frame.bottom),BPoint(frame.right,frame.bottom-(3*circleSize)),BPoint(frame.right,frame.bottom),B_MIXED_COLORS);
+	drawOn->FillTriangle(BPoint(frame.right-(3*circleSize),frame.bottom),BPoint(frame.right,frame.bottom-(3*circleSize)),BPoint(frame.right,frame.bottom));
 	
 
 	drawOn->SetHighColor(borderColor);
