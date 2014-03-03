@@ -52,6 +52,8 @@ public:
 				void		MoveBy(float dx, float dy);
 				void		ResizeBy(float dx,float dy);
 				bool		Selected(void){return selected;};
+				BMessage*	Parent(void){return parentNode;};
+
 
 protected:
 				void		Init();
