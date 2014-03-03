@@ -820,7 +820,8 @@ void GraphEditor::RemoveRenderer(Renderer *wichRenderer) {
 		ClassRenderer* cRenderer = dynamic_cast <ClassRenderer*>(wichRenderer);
 		if (cRenderer != NULL) {
 			GroupRenderer* gRenderer = (GroupRenderer*)FindRenderer(cRenderer->Parent()) ;
-			gRenderer->RemoveRenderer(wichRenderer);
+			if (gRenderer != NULL)
+				gRenderer->RemoveRenderer(wichRenderer);
 		}
 		if (renderer->HasItem(wichRenderer)){	
 			renderer->RemoveItem(wichRenderer);
