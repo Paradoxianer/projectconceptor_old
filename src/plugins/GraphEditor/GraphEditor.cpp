@@ -817,6 +817,11 @@ void GraphEditor::RemoveRenderer(Renderer *wichRenderer) {
 		if (wichRenderer->GetMessage())
 			(wichRenderer->GetMessage())->RemoveName(renderString);
 		//check if this rendere belongs to the grapheditor or if not it belongs to a group so the group will take care to remove the renderer from its renderlist
+		ClassRenderer* cRenderer = dynamic_cast <ClassRenderer*>(wichRenderer);
+		if (cRenderer != NULL) {
+			GroupRenderer* gRenderer = (GroupRenderer*)FindRenderer(cRenderer->Parent()) ;
+			gRenderer->RemoveRenderer(wichRenderer);
+		}
 		if (renderer->HasItem(wichRenderer)){	
 			renderer->RemoveItem(wichRenderer);
 			delete wichRenderer;
@@ -881,9 +886,12 @@ Renderer* GraphEditor::FindConnectionRenderer(BPoint where) {
 
 Renderer* GraphEditor::FindRenderer(BMessage *container) {
 	Renderer	*currentRenderer	= NULL;
-	if ( (container->FindPointer(renderString,(void **) &currentRenderer) == B_OK) 
-		&& (currentRenderer) && renderer->HasItem(currentRenderer) )
-		return currentRenderer;
+	if (container != NULL)
+		if ( (container->FindPointer(renderString,(void **) &currentRenderer) == B_OK) 
+			&& (currentRenderer) && renderer->HasItem(currentRenderer) )
+			return currentRenderer;
+		else
+			return NULL;
 	else
 		return NULL;
 }
