@@ -397,7 +397,6 @@ void GraphEditor::MouseDown(BPoint where) {
 			startMouseDown=new BPoint(scaledWhere);
 			oldEventMask = EventMask();
 			//EventMaske setzen so dass die Maus auch über den View verfolgt wird
-			//SetMouseEventMask(B_POINTER_EVENTS, B_NO_POINTER_HISTORY | B_SUSPEND_VIEW_FOCUS | B_LOCK_WINDOW_FOCUS);
 			SetMouseEventMask(B_POINTER_EVENTS, B_NO_POINTER_HISTORY  | B_LOCK_WINDOW_FOCUS);
 		}
 		//if any other mousebutton was clicked we just send a deselect command
@@ -904,13 +903,12 @@ void GraphEditor::BringToFront(Renderer *wichRenderer) {
 	BMessage	*tmpMessage		= NULL;
 	BList		*groupAllNodeList	= new BList();
 	Renderer	*tmpRenderer		= NULL;
-	
 	if ((tmpMessage = wichRenderer->GetMessage()) != NULL) {
-	    if ((tmpMessage->FindPointer("Node::parent", (void **)&parentNode) == B_OK) && (parentNode != NULL) ) {
-		parentNode->FindPointer(renderString,(void **)&tmpRenderer);
-		if (tmpRenderer)
-			((GroupRenderer *)tmpRenderer)->BringToFront(wichRenderer);
-	    }
+	    /*if ((tmpMessage->FindPointer("Node::parent", (void **)&parentNode) == B_OK) && (parentNode != NULL) ) {
+			parentNode->FindPointer(renderString,(void **)&tmpRenderer);
+			if (tmpRenderer)
+				((GroupRenderer *)tmpRenderer)->BringToFront(wichRenderer);
+	    }*/
 	DeleteFromList(wichRenderer);
 	AddToList(wichRenderer,renderer->CountItems()+1);
 	Invalidate();
@@ -1073,7 +1071,6 @@ void GraphEditor::DeleteFromList(Renderer *whichRenderer)
 			}
 		}
 		// if the deleted Rendere is a list we need to delete all subrendere too
-		//** need to reworked
 		if (whichRenderer->GetMessage()->what == P_C_GROUP_TYPE) {
 			GroupRenderer	*groupPainter	= dynamic_cast <GroupRenderer *>(whichRenderer);
 			if (groupPainter != NULL){		
@@ -1087,14 +1084,15 @@ void GraphEditor::DeleteFromList(Renderer *whichRenderer)
 
 void GraphEditor::AddToList(Renderer *whichRenderer, int32 pos) {
 	BList		*connectionList	= NULL;
-	int32		i		= 0;
-	BMessage	*tmpNode	= NULL;
+	int32		i				= 0;
+	BMessage	*tmpNode		= NULL;
+	Renderer	*tmpRenderer	= NULL;
 	if (pos>renderer->CountItems()) {
 		if (whichRenderer->GetMessage()->FindPointer("Node::incoming",(void **)&connectionList) == B_OK) {
 			for (i = 0; i< connectionList->CountItems();i++) {
 				tmpNode = (BMessage *)connectionList->ItemAt(i);
-				if (FindRenderer(tmpNode)) {
-					renderer->AddItem(FindRenderer(tmpNode));
+				if (tmpNode->FindPointer(renderString,(void **) &tmpRenderer) == B_OK) {
+					renderer->AddItem(tmpRenderer);
 					pos++;
 				}
 			}
@@ -1102,8 +1100,8 @@ void GraphEditor::AddToList(Renderer *whichRenderer, int32 pos) {
 		if (whichRenderer->GetMessage()->FindPointer("Node::outgoing",(void **)&connectionList) == B_OK) {
 			for (i = 0; i< connectionList->CountItems();i++) {
 				tmpNode = (BMessage *)connectionList->ItemAt(i);
-				if (FindRenderer(tmpNode)) {
-					renderer->AddItem(FindRenderer(tmpNode));
+				if (tmpNode->FindPointer(renderString,(void **) &tmpRenderer) == B_OK) {
+					renderer->AddItem(tmpRenderer);
 					pos++;
 				}
 			}
