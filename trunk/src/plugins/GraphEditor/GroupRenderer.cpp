@@ -55,7 +55,6 @@ void GroupRenderer::ValueChanged()
 	BMessage	*node			= NULL;
 	Renderer	*painter		= NULL;
 
-
 	ClassRenderer::ValueChanged();
 	for ( it=changedNodes->begin();it!=changedNodes->end();it++) {
 		node	= *it;

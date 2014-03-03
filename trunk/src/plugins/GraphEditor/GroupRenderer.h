@@ -60,9 +60,6 @@ public:
 				//++++++Group Special Methods
 			void			AddRenderer(Renderer* newRenderer);
 			void			RemoveRenderer(Renderer* wichRenderer);
-/*			Renderer*		FindRenderer(BPoint where);
-			Renderer*		FindNodeRenderer(BPoint where);
-			Renderer*		FindConnectionRenderer(BPoint where);*/
 			Renderer*		FindRenderer(BMessage *container);
 
 
