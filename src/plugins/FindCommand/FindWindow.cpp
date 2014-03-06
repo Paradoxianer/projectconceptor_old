@@ -49,7 +49,7 @@ void FindWindow::CreateViews() {
 
 }
 
-BRow *FindWindow::CreateRow(BMessage *tmpNode){
+/*BRow *FindWindow::CreateRow(BMessage *tmpNode){
 	char		*tmpName	= NULL;
 	BMessage	*tmpMessage	= new BMessage();
 	tmpNode->FindMessage("Node::Data",tmpMessage);
@@ -57,7 +57,7 @@ BRow *FindWindow::CreateRow(BMessage *tmpNode){
 	BRow		*row		= new BRow();
 	row->SetField(new BStringField(tmpName),0);
 	return row;
-}
+}*/
 
 void FindWindow::ChangeLanguage()
 {

@@ -39,11 +39,11 @@ export DEFINES= DEBUG
 #	if unspecified default warnings will be used
 #	NONE = supress all warnings
 #	ALL = enable all warnings
-export WARNINGS = NONE
+export WARNINGS = ALL
 #	specify whether image symbols will be created
 #	so that stack crawls in the debugger are meaningful
 #	if TRUE symbols will be created
-export SYMBOLS = FALSE
+export SYMBOLS = TRUE
 #	specify debug settings
 #	if TRUE will allow application to be run from
 #	a source-level debugger
