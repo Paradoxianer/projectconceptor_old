@@ -59,15 +59,12 @@ SRCS= 	About/AboutWindow.cpp \
 		ToolBar/PatternToolItem.cpp \
 		Tools/AFont.cpp \
 		Tools/BViewSplitter.cpp \
-		Tools/ColumnTypes.cpp \
-		Tools/ColumnListView.cpp \
 		Tools/Divider.cpp \
 		Tools/PCSavePanel.cpp \
 		Tools/PDocLoader.cpp \
 		Tools/Indexer.cpp \
 		Tools/InputRequestView.cpp \
  		Tools/InputRequest.cpp  \
- 		Tools/LiveTextView.cpp  \
  		Tools/ShortCutFilter.cpp \
 		Tools/TextViewCompleter.cpp  \
 		Tools/tinyxml/tinystr.cpp \
@@ -134,7 +131,7 @@ LOCAL_INCLUDE_PATHS =	. \
 #	if unspecified default warnings will be used
 #	NONE = supress all warnings
 #	ALL = enable all warnings
-#WARNINGS = NONE
+WARNINGS = ALL
 
 #	specify whether image symbols will be created
 #	so that stack crawls in the debugger are meaningful

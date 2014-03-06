@@ -36,7 +36,7 @@ PDocument::PDocument(PDocumentManager *initManager):BLooper()
 PDocument::PDocument(PDocumentManager *initManager,entry_ref *openEntry):BLooper()
 {
 	TRACE();
-	PRINT(("%d\n",openEntry));
+	PRINT(("%s\n",openEntry->name));
 	documentManager=initManager;
 	Run();
 	Init();
@@ -584,7 +584,7 @@ void PDocument::Save(void)
 			window->SetTitle(Title());
 	}
 	else
-		PRINT(("ERROR:\tPDocument","Save error %s\n",strerror(err)));
+		PRINT(("ERROR:\tPDocument -Save error %s\n",strerror(err)));
 	if (locked)
 		Unlock();
 }
