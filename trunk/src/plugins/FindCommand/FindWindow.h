@@ -54,7 +54,6 @@ private:
 			void			CreateViews();
 			BRow			*CreateRow(BMessage *tmpNode);
 			LiveTextView	*searchText;
-			BColumnListView	*nodeListView;
 			PDocument		*doc;
 		};
 #endif

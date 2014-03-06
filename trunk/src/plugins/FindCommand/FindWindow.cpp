@@ -21,23 +21,15 @@ FindWindow::FindWindow(PDocument *tmpDoc):BWindow(BRect(50,50,600,400),_T("Find"
 
 }
 
-void FindWindow::Init()
-{
+void FindWindow::Init() {
 	BList		*nodeList	= doc->GetAllNodes();
 	int32		i			= 0;
-	nodeListView->AddColumn(new BStringColumn("Node",150.0,30.0,300.0,5),0);
-	for (i=0; i< nodeList->CountItems();i++)
-	{
-		nodeListView->AddRow(CreateRow((BMessage *)nodeList->ItemAt(i)));
-	}
 }
 
-void FindWindow::CreateViews()
-{
+void FindWindow::CreateViews() {
 	TRACE();
     searchText				= new LiveTextView("searchText", new BMessage('find'));
-    nodeListView			= new BColumnListView("nodeListView",0);
-	SetLayout(new BGroupLayout(B_HORIZONTAL));	
+	SetLayout(new BGroupLayout(B_HORIZONTAL));
 	AddChild(
 		BGroupLayoutBuilder(B_VERTICAL)
 		.Add(BGroupLayoutBuilder(B_HORIZONTAL)
@@ -48,7 +40,6 @@ void FindWindow::CreateViews()
 		)
 		.Add(BSplitLayoutBuilder(B_VERTICAL)
 			.Add(new BBox("Advanced Search"))
-			.Add(nodeListView)	
 		)
 		.Add(BGroupLayoutBuilder(B_HORIZONTAL)
 			.Add(new BButton("okButton",_T("OK"), new BMessage('ok')))
@@ -58,8 +49,7 @@ void FindWindow::CreateViews()
 
 }
 
-BRow *FindWindow::CreateRow(BMessage *tmpNode)
-{
+BRow *FindWindow::CreateRow(BMessage *tmpNode){
 	char		*tmpName	= NULL;
 	BMessage	*tmpMessage	= new BMessage();
 	tmpNode->FindMessage("Node::Data",tmpMessage);
