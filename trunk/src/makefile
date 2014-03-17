@@ -23,6 +23,9 @@ svnupdate:
 	@echo "UPDATED"
 	@echo "--------------------------------"
 
+
+INSTALL_DIR	= /boot/home/config/packages
+
 #global setting global the app Dir
 export APP_DIR		=	bin/apps/ProjectConceptor
 export PLUGIN_DIR	=	Plugins
@@ -64,11 +67,23 @@ plugins_clean:
 app_install: app/makefile FORCE
 	cd app && make install
 
+
+
 plugins_install: plugins/makefile FORCE
 	cd plugins && make install
 
 default: app plugins
 clean: app_clean plugins_clean
-install: app_install plugins_install
+#install: app_install plugins_install
+
+install:: $(NAME)
+	@echo "making a package"
+	@cp .PackageInfo ../bin
+	@package create -C ../bin ProjectConceptor_gcc.hpkg
+	@echo "installing package"
+	@cp ProjectConceptor_gcc.hpkg $(INSTALL_DIR)
+	@echo "Installation done."
+
+
 
 FORCE:

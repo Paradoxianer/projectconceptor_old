@@ -156,7 +156,7 @@ SVG_ICON = ../../Data/Icons/Logogross.svg
 
 TARGET_DIR	=  .
 
-INSTALL_DIR	= /boot/apps/ProjectConceptor
+#INSTALL_DIR	= /boot/apps/ProjectConceptor
 PLUGIN_DIR	= Plugins
 
 
