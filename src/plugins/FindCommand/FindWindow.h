@@ -2,16 +2,14 @@
 #define FIND_WINDOW_H
 
 #include "ProjectConceptorDefs.h"
-//#include "FindView.h"
 #include "PDocument.h"
 #include "ColumnListView.h"
-#include "LiveTextView.h"
+
 
 #include <app/Message.h>
 #include <interface/Window.h>
 #include <interface/TabView.h>
 #include <interface/TextControl.h>
-
 #include <interface/SplitView.h>
 
 //#include <interface/ColumnTypes.h>
@@ -28,7 +26,7 @@
  * or find nodes in a given rectangel and so on.
  *
  * @todo figure out how to optimizie locking so that the document isnt loked and we get all changes
- * if there is an editor
+ * if there is an editor "working" on the Document
  * @todo define the complete interface ;-(
  */
 
@@ -47,13 +45,13 @@ public:
 	virtual	void			Quit(void);
 protected:
 			void			ChangeLanguage(void);
-			void			FindNodes(BMessage *node, BString *string);
-			bool			FindInNode(BMessage *node,BString *string);
+		/*	void			FindNodes(BMessage *node, BString *string);
+			bool			FindInNode(BMessage *node,BString *string);*/
 			bool			advanced;
 private:
 			void			CreateViews();
 			BRow			*CreateRow(BMessage *tmpNode);
-			LiveTextView	*searchText;
+			BTextControl	*searchText;
 			PDocument		*doc;
 		};
 #endif
