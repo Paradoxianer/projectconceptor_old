@@ -7,10 +7,7 @@
 #include <interface/StringView.h>
 #include <interface/SpaceLayoutItem.h>
 
-
-
 #include "FindWindow.h"
-#include "ColumnTypes.h"
 
 FindWindow::FindWindow(PDocument *tmpDoc):BWindow(BRect(50,50,600,400),_T("Find"),B_FLOATING_WINDOW_LOOK,B_MODAL_APP_WINDOW_FEEL,B_AUTO_UPDATE_SIZE_LIMITS)
 {
@@ -28,7 +25,8 @@ void FindWindow::Init() {
 
 void FindWindow::CreateViews() {
 	TRACE();
-    searchText				= new LiveTextView("searchText", new BMessage('find'));
+    searchText		= new BTextControl("searchText", "Search","",new BMessage('find'));
+    searchText->SetModificationMessage(new BMessage('live'));
 	SetLayout(new BGroupLayout(B_HORIZONTAL));
 	AddChild(
 		BGroupLayoutBuilder(B_VERTICAL)
@@ -49,16 +47,6 @@ void FindWindow::CreateViews() {
 
 }
 
-/*BRow *FindWindow::CreateRow(BMessage *tmpNode){
-	char		*tmpName	= NULL;
-	BMessage	*tmpMessage	= new BMessage();
-	tmpNode->FindMessage("Node::Data",tmpMessage);
-	tmpMessage->FindString("Name",(const char **)&tmpName);
-	BRow		*row		= new BRow();
-	row->SetField(new BStringField(tmpName),0);
-	return row;
-}*/
-
 void FindWindow::ChangeLanguage()
 {
 	TRACE();
@@ -68,7 +56,6 @@ void FindWindow::ChangeLanguage()
 void FindWindow::MessageReceived(BMessage *message)
 {
 	TRACE();
-	message->PrintToStream();
 	switch(message->what)
 	{
 		case 'ok':
@@ -85,17 +72,29 @@ void FindWindow::MessageReceived(BMessage *message)
 		break;
 		case 'cl':
 		{
+			//**restore old selection state
 			BWindow::Quit();
 		}
 		break;
 		case 'find':
 		{
-		
+			//**make shure to to an unshadowed find for the "recording Makros and so on"
+		}
+		break;
+		case 'live': 
+		{
+			BMessage	*searchMessage	= new BMessage(MENU_SEARCH_FIND);
+			//searchMessage->AddString("Command::Name","Find");
+			searchMessage->AddString("searchString",searchText->Text());
+			searchMessage->AddBool("shadow",true);
+			BMessenger	sender(doc);
+			sender.SendMessage(searchMessage);
 		}
 		break; 
 	}
 }
 
+/*
 void FindWindow::FindNodes(BMessage *node,BString *search)
 {
 	char		*attribName		= NULL;
@@ -137,7 +136,7 @@ bool FindWindow::FindInNode(BMessage *node,BString *search)
 		i++;
 	}
 	return found;
-}
+}*/
 
 
 void FindWindow::Quit()

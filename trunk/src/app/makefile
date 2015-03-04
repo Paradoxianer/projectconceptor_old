@@ -65,7 +65,6 @@ SRCS= 	About/AboutWindow.cpp \
 		Tools/Indexer.cpp \
 		Tools/InputRequestView.cpp \
  		Tools/InputRequest.cpp  \
- 		Tools/LiveTextView \
  		Tools/ShortCutFilter.cpp \
 		Tools/TextViewCompleter.cpp  \
 		Tools/tinyxml/tinystr.cpp \
